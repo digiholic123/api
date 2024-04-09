@@ -91,6 +91,8 @@ mongoose.connect(
 	}
 )
 
+
+
 // Configure session middleware
 app.use(session({
 	store: MongoStore.create({ mongoUrl: process.env.DB_CONNECT }),
@@ -107,7 +109,18 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "views")));
 
-
+const corsOpts = {
+	origin: '*',
+	methods: [
+	  'GET',
+	  'POST',
+	],
+	allowedHeaders: [
+	  "Access-Control-Allow-Headers",
+	  "x-access-token, Origin, Content-Type, Accept", "authorization",
+	],
+  };
+  app.use(cors(corsOpts));
 
 app.use(function (req, res, next) {
 	res.set(
