@@ -1,0 +1,132 @@
+<% layout('../layout') %>
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-xl-12 col-md-12">
+            <div class="card-box pt-0 pb-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item " aria-current="page"><a href="/"> Home </a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Withdraw Request OFF </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-xl-12 col-md-12">
+            <div class="card-box ">
+                <h4 class="mt-0 mb-0 header-title text-center">Withdraw Request ON/OFF</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-xl-12 col-md-12">
+            <div class="card-box">
+                <p class="text-center">Set Withdraw Request ON-OFF for This Day</p>
+                 <table id="dataTable" class="table text-center table-bordered dt-responsive    nowrap">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Request on/off </th>
+                            <th>Message</th>
+                            <th>Updated At</th>
+                            <th>Action</th>
+                        </tr>       
+                    </thead>
+                    <tbody id="changeData">
+                        <% for(index in reqdata){ 
+                            let value = "";
+                            let messageCheckbox  = "Request is On";
+                            if(reqdata[index].enabled ===  false){
+                                value = "checked";
+                                messageCheckbox = "Request is Off";
+                            }
+                            let dayName =  '"'+ reqdata[index].dayName+ '"';
+                            let status = '"'+reqdata[index].enabled+ '"';
+                            let rowId ='"'+ reqdata[index]._id+ '"';
+                            let reason = '"'+reqdata[index].message+ '"';
+
+                        %>
+                            <tr>
+                                <td>
+                                    <%= reqdata[index].dayName %>
+                                </td>
+                                <td>
+                                    <%= messageCheckbox %>
+                                </td>
+                                <td>
+                                    <%= reqdata[index].message %>
+                                </td>
+                                <td>
+                                    <%= reqdata[index].updatedAt %>
+                                </td>
+                                <td>
+                                    <button data-toggle="modal" data-target=".bs-example-modal-sm" class="btn btn-icon waves-effect waves-light btn-purple btn-xs" onclick="update(<%= rowId %>, <%= status%>, <%= dayName %>, <%= reason %>)" title="Update Debit Request Setting"><i class="fa fa-edit mr-1"></i> Edit Setting</button>
+                                </td>
+                            </tr>
+                       <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-sm show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="CorD" class="col-form-label">On or Off</label>
+                    <select id="CorD" class="form-control" required>
+                        <option value="true">On</option>
+                        <option value="false">Off</option>
+                    </select>
+                </div>
+                <div class="mt-3">
+                    <h5>Message</h5>
+                    <input type="text" class="form-control" id="reason" required>
+                    <input type="hidden" id="userid">
+                </div>
+                <br />
+                <button type="submit" class="btn btn-dark waves-effect waves-light" data-dismiss="modal" onclick="updateSettings()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function update(rowId, status, dayName, reason){
+        $("#mySmallModalLabel").html("ON-OFF Edit For "+dayName);
+        $("#CorD").val(status);
+        $("#userid").val(rowId);
+        $("#reason").val(reason);   
+    }
+
+    function updateSettings(){
+        let status =  $("#CorD").val();
+        let rowId = $("#userid").val();
+        let reason = $("#reason").val();
+
+        fetch('/reqOnOff/updateReq',{
+            method : "POST",
+            body : JSON.stringify({ status: status, rowId: rowId, reason: reason  }),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: 'same-origin',
+        })
+        .then(res => res.json())
+        .then(body => {
+            location.reload();
+        });
+    }
+</script>
