@@ -75,6 +75,19 @@ const settelment = require("./routes/dashboard/finalCuttingHisab");
 const temp = require("./routes/dashboard/login");
 const payments = require('./routes/API/payments/razorPay')
 
+const corsOpts = {
+	origin: '*',
+	methods: [
+	  'GET',
+	  'POST',
+	],
+	allowedHeaders: [
+	  "Access-Control-Allow-Headers",
+	  "x-access-token, Origin, Content-Type, Accept", "authorization",
+	],
+  };
+  
+  app.use(cors(corsOpts));
 //Connect To DB
 dotenv.config();
 mongoose.connect(
@@ -109,18 +122,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "views")));
 
-const corsOpts = {
-	origin: '*',
-	methods: [
-	  'GET',
-	  'POST',
-	],
-	allowedHeaders: [
-	  "Access-Control-Allow-Headers",
-	  "x-access-token, Origin, Content-Type, Accept", "authorization",
-	],
-  };
-  app.use(cors(corsOpts));
+
 
 app.use(function (req, res, next) {
 	res.set(
