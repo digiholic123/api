@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"7c908c8f84ce4977b28639198b6a9a28","collectionName":"starline_game_types","type":"collection"}

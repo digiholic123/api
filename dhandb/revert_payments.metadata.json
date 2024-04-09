@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"ab63ab035cb040d686f2980abed14f1b","collectionName":"revert_payments","type":"collection"}

@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"ca61190eac6e4b4f8ceb64ca80b1704f","collectionName":"ipblocks","type":"collection"}

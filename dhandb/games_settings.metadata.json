@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"467ed8e0435f481dbca6030cf42f36a5","collectionName":"games_settings","type":"collection"}
