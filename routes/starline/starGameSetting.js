@@ -7,31 +7,29 @@ const permission = require("../helpersModule/permission");
 
 router.get("/web/startline", async (req, res) => {
   try {
-
-
-
     const id = "61fbd0cd41b0d43022cabf27";
     // const id = req.query.userId;
-    const userInfo = req.session.details;
-    const permissionArray = req.view;
+
     let finalArr = {};
-    const provider = await starProvider.find().sort({ _id: 1 });
+    const provider1 = await starProvider.find().sort({ _id: 1 });
     let finalNew = [];
 
-    for (index in provider) {
-      let id = provider[index]._id;
-      
+    console.log("provider" ,provider1);
+    
+    for (index in provider1) {
+      let id = provider1[index]._id;
+      // let id = mongoose.Types.ObjectId(provider1[index]._id);
 
-      // let id = provider[index]._id;
+
       const settings = await starSettings
         .find({ providerId: id })
         .sort({ _id: 1 });
       finalArr[id] = {
         _id: id,
-        providerName: provider[index].providerName,
-        providerResult: provider[index].providerResult,
-        modifiedAt: provider[index].modifiedAt,
-        resultStatus: provider[index].resultStatus,
+        providerName: provider1[index].providerName,
+        providerResult: provider1[index].providerResult,
+        modifiedAt: provider1[index].modifiedAt,
+        resultStatus: provider1[index].resultStatus,
         gameDetails: settings,
       };
     }
@@ -40,57 +38,12 @@ router.get("/web/startline", async (req, res) => {
       let data = finalArr[index2];
       finalNew.push(data);
     }
-
+ console.log("finalNew" ,finalNew)
     res.send({ data: finalNew, status: true });
   } catch (e) {
     res.json({ message: e });
   }
 });
-
-
-// router.get("/web/startline", async (req, res) => {
-//   try {
-//     const id = "61fbd0cd41b0d43022cabf27";
-//     const userInfo = req.session.details;
-//     const permissionArray = req.view;
-//     let finalArr = {};
-//     const provider = await starProvider.find().sort({ _id: 1 });
-//     console.log(provider,"providerproviderproviderprovider")
-//     console.log(provider[0].providerName,"providerprovider");
-//     let finalNew = [];
-
-//     for (index in provider) {
-//       let id = provider[index]._id;
-
-//       // Log provider name
-//       console.log("Provider Name:", provider[index].providerName);
-
-//       const settings = await starSettings
-//         .find({ providerId: id })
-//         .sort({ _id: 1 });
-//       finalArr[id] = {
-//         _id: id,
-//         providerName: provider[index].providerName,
-//         providerResult: provider[index].providerResult,
-//         modifiedAt: provider[index].modifiedAt,
-//         resultStatus: provider[index].resultStatus,
-//         gameDetails: settings,
-//       };
-      
-//     }
-
-//     for (index2 in finalArr) {
-//       let data = finalArr[index2];
-//       finalNew.push(data);
-//     }
-//    console.log(data,"finalNew")
-//     res.send({ data: finalNew, status: true });
-//   } catch (e) {
-//     res.json({ message: e });
-//   }
-// });
-
-
 
 router.get("/", session, permission, async (req, res) => {
   try {

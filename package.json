@@ -4,7 +4,7 @@
   "description": "This is Dashboard For Indo Bets",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "author": "Mohit",
   "license": "ISC",
@@ -41,6 +41,7 @@
     "node-fetch": "^2.6.0",
     "node-gcm": "^1.0.2",
     "nodemailer": "^6.9.4",
+    "nodemon": "^3.1.0",
     "pusher": "^2.2.2",
     "razorpay": "^2.9.2",
     "redis": "^4.6.8",
