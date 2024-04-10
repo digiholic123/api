@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"3ce48a34cc744707844479a7ff391337","collectionName":"upi_payments","type":"collection"}
