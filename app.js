@@ -183,7 +183,7 @@ app.use("/gameList", gameRates);
 app.use("/gameResult", gameResult);
 app.use("/winner", winnerList);
 app.use("/starlineProvider", starlineProvider);
-app.use("/starlinegamesetting", starlineSettings);
+app.use("/api/starlinegamesetting", starlineSettings);
 app.use("/starlinegamerates", starlineGameList);
 app.use("/starProfitLoss", starProfitLoss);
 app.use("/starlinegameresult", starlineResult);
