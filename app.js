@@ -13,10 +13,9 @@ const dateTime = require("node-datetime");
 const expressip = require("express-ip");
 const redis = require("redis");
 const session = require("express-session");
-const MongoStore = require('connect-mongo');
-const morgan = require('morgan')
-const whatsAppCron = require('./routes/whatsapp/whatsapp')
-
+const MongoStore = require("connect-mongo");
+const morgan = require("morgan");
+const whatsAppCron = require("./routes/whatsapp/whatsapp");
 
 // var MemoryStore = require('memorystore')(session)
 
@@ -71,70 +70,55 @@ const common = require("./routes/dashboard/common");
 const addWinpoints = require("./routes/games/addWinponitsAll");
 const finaOC = require("./routes/dashboard/finalOCcutting");
 const employee = require("./routes/master/employee");
-const settelment = require("./routes/dashboard/finalCuttingHisab"); 
+const settelment = require("./routes/dashboard/finalCuttingHisab");
 const temp = require("./routes/dashboard/login");
-const payments = require('./routes/API/payments/razorPay')
+const payments = require("./routes/API/payments/razorPay");
+const website = require("./routes/API/web");
 
-const corsOpts = {
-	origin: '*',
-	methods: [
-	  'GET',
-	  'POST',
-	],
-	allowedHeaders: [
-	  "Access-Control-Allow-Headers",
-	  "x-access-token, Origin, Content-Type, Accept", "authorization",
-	],
-  };
-  
-  app.use(cors(corsOpts));
 //Connect To DB
 dotenv.config();
 mongoose.connect(
-	process.env.DB_CONNECT,
-	{
-		useNewUrlParser: true,
-		useFindAndModify: false,
-		useCreateIndex: true,
-		useUnifiedTopology: true,
-	},
-	(err) => {
-		if (err) console.log(err);
-		else console.log("Mongo Connected to",process.env.DB_CONNECT);
-	}
-)
-
-
+  process.env.DB_CONNECT,
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  },
+  (err) => {
+    if (err) console.log(err);
+    else console.log("Mongo Connected");
+  }
+);
 
 // Configure session middleware
-app.use(session({
-	store: MongoStore.create({ mongoUrl: process.env.DB_CONNECT }),
-	secret: 'dashboard###$$$$123321',
-	resave: false,
-	saveUninitialized: true,
-  }));
-  
+app.use(
+  session({
+    store: MongoStore.create({ mongoUrl: process.env.DB_CONNECT }),
+    secret: "dashboard###$$$$123321",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // Logger
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 //Public
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "views")));
 
-
-
 app.use(function (req, res, next) {
-	res.set(
-		"Cache-Control",
-		"no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-	);
-	next();
+  res.set(
+    "Cache-Control",
+    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+  );
+  next();
 });
 
 //body parser
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-app.use(bodyParser.json({limit: '50mb', extended: true}));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(cors());
 app.use(responseTime());
 
@@ -178,12 +162,12 @@ app.use("/recovery", recovery);
 app.use("/userList", user);
 app.use("/games", games);
 app.use("/masters", master);
-app.use("/api/gamesSetting", gameSetting);
-app.use("/api/gameList", gameRates);
-app.use("/api/gameResult", gameResult);
+app.use("/gamesSetting", gameSetting);
+app.use("/gameList", gameRates);
+app.use("/gameResult", gameResult);
 app.use("/winner", winnerList);
 app.use("/starlineProvider", starlineProvider);
-app.use("/api/starlinegamesetting", starlineSettings);
+app.use("/starlinegamesetting", starlineSettings);
 app.use("/starlinegamerates", starlineGameList);
 app.use("/starProfitLoss", starProfitLoss);
 app.use("/starlinegameresult", starlineResult);
@@ -204,14 +188,15 @@ app.use("/fundReport", fundReport);
 app.use("/creditDebit", creditDebit);
 app.use("/analysys", analysys);
 app.use("/appSettings", howPlay);
-app.use("/api/htp", htp);
+app.use("/htp", htp);
 app.use("/common", common);
 app.use("/jodiAll", jodiAll);
 app.use("/addWinpoints", addWinpoints);
 app.use("/finalOCcuttinggroup", finaOC);
 app.use("/employee", employee);
 app.use("/settelment", settelment);
-app.use("/payments", payments)
+app.use("/payments", payments);
+app.use("/api", website);
 
 const gameProvi = require("./model/games/Games_Provider");
 const declineNoti = require("./routes/helpersModule/cancelReq");
@@ -222,76 +207,79 @@ const userDltCron = require("./routes/helpersModule/cronJobs");
 
 userDltCron();
 cron.schedule("0 9 * * *", async () => {
-	try {
-		const dt = dateTime.create();
-		const formatted = dt.format("m/d/Y I:M:S p");
+  try {
+    const dt = dateTime.create();
+    const formatted = dt.format("m/d/Y I:M:S p");
 
-		await gameProvi.updateMany({
-			$set: {
-				providerResult: "***-**-***",
-				modifiedAt: formatted,
-				resultStatus: 0,
-			},
-		});
-	} catch (error) {
-		console.log(error);
-	}
+    await gameProvi.updateMany({
+      $set: {
+        providerResult: "***-**-***",
+        modifiedAt: formatted,
+        resultStatus: 0,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 cron.schedule("55 23 * * *", async (req, res) => {
-	try {
-		const dt = dateTime.create();
-		const formatted = dt.format("d/m/Y");
-		await fund.updateMany(
-			{ reqStatus: "Pending" },
-			{
-				$set: { reqStatus: "Declined", reqUpdatedAt: formatted },
-			}
-		);
-		declineNoti();
-	} catch (error) {
-		console.log(error);
-	}
+  try {
+    const dt = dateTime.create();
+    const formatted = dt.format("d/m/Y");
+    await fund.updateMany(
+      { reqStatus: "Pending" },
+      {
+        $set: { reqStatus: "Declined", reqUpdatedAt: formatted },
+      }
+    );
+    declineNoti();
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 cron.schedule("5 0 * * *", async (req, res) => {
-	try {
-		const Active_TotWalletBal = await userBal.aggregate([
-			{ $match: { banned: false } },
-			{ $group: { _id: null, sumdigit: { $sum: "$wallet_balance" } } },
-		]);
-		if (Active_TotWalletBal.length) {
-			const dt = dateTime.create();
-			const formatted = dt.format("d/m/Y I:M:S p");
-			const trace = new userWalletTracing({
-				walletBal_12oClock: Active_TotWalletBal[0].sumdigit,
-				createdAt: formatted,
-			});
-			await trace.save();
-		}
-	} catch (error) {
-		console.log(error);
-	}
+  try {
+    const Active_TotWalletBal = await userBal.aggregate([
+      { $match: { banned: false } },
+      { $group: { _id: null, sumdigit: { $sum: "$wallet_balance" } } },
+    ]);
+    if (Active_TotWalletBal.length) {
+      const dt = dateTime.create();
+      const formatted = dt.format("d/m/Y I:M:S p");
+      const trace = new userWalletTracing({
+        walletBal_12oClock: Active_TotWalletBal[0].sumdigit,
+        createdAt: formatted,
+      });
+      await trace.save();
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 cron.schedule("*/1 * * * *", async (req, res) => {
-	try {
-		const dt = dateTime.create();
-		const formatted = dt.format("I:M p");
-                var time = new Date();
-                const current_time= time.toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true })
+  try {
+    const dt = dateTime.create();
+    const formatted = dt.format("I:M p");
+    var time = new Date();
+    const current_time = time.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
 
-		whatsAppCron.executeWhatsAppTrigger(`${current_time}`)
-	    console.log("WhatsApp Cron...",current_time)
-	} catch (error) {
-		console.log(error);
-	}
+    whatsAppCron.executeWhatsAppTrigger(`${current_time}`);
+    console.log("WhatsApp Cron...", current_time);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const port = process.env.port || 5000;
 
-
 app.listen(port, () => {
-	new Date().toLocaleDateString()
-	console.log(`Running on PORT: ${port} Date: ${new Date().toLocaleString()}`);
+  new Date().toLocaleDateString();
+  console.log(`Running on PORT: ${port} Date: ${new Date().toLocaleString()}`);
 });

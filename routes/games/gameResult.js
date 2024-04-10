@@ -17,6 +17,9 @@ const gcm = require("node-gcm");
 // 	"AAAAz-Vezi4:APA91bHNVKatfjZiHl13fcF1xzWK5pLOixdZlHE8KVRwIxVHLJdWGF973uErxgjL_HkzzD1K7a8oxgfjXp4StlVk_tNOTYdFkSdWe6vaKw6hVEDdt0Dw-J0rEeHpbozOMXd_Xlt-_dM1"
 // );
 const sender = new gcm.Sender(process.env.FIREBASE_SENDER_KEY);
+
+
+
 router.get("/web/gameresult", async (req, res) => {
   try {
     const name = "TIME BAZAR"; // Example name to filter by

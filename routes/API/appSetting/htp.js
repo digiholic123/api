@@ -7,16 +7,15 @@ const verify = require("../verifyTokens");
 
 router.get("/api/walletContact", async (req, res) => {
   try {
-    const response = await WalletContact.find({}, { number: 1 });
-
+    const response = await WalletContact.aggregate([
+        {
+            $project: { number: 1 } 
+        }
+    ]);
     res.send({ status: true, data: response });
-  } catch (e) {
-    res.status(400).send({
-      status: 0,
-      message: "Something Happened Please Contact the Support",
-      error: e,
-    });
-  }
+} catch (error) {
+    res.status(500).send({ status: false, message: error.message });
+}
 });
 
 
