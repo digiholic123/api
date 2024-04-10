@@ -18,7 +18,18 @@ const morgan = require("morgan");
 const whatsAppCron = require("./routes/whatsapp/whatsapp");
 
 // var MemoryStore = require('memorystore')(session)
-
+const corsOpts = {
+	origin: '*',
+	methods: [
+	  'GET',
+	  'POST',
+	],
+	allowedHeaders: [
+	  "Access-Control-Allow-Headers",
+	  "x-access-token, Origin, Content-Type, Accept", "authorization",
+	],
+  };
+  app.use(cors(corsOpts));
 //API ROUTES
 const authRoute = require("./routes/API/auth");
 const profileUpdate = require("./routes/API/profile/userProfile");
