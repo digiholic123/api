@@ -40,7 +40,7 @@ const index = require("./routes/dashboard/index");
 const user = require("./routes/dashboard/users");
 const games = require("./routes/games/allGames");
 const gameSetting = require("./routes/games/gameSetting");
-const gameRates = require("./routes/games/api/gameList");
+const gameRates = require("./routes/games/gameList");
 const gameResult = require("./routes/games/gameResult");
 const winnerList = require("./routes/games/winnersList");
 const starlineProvider = require("./routes/starline/starlineProvider");
@@ -179,7 +179,7 @@ app.use("/userList", user);
 app.use("/games", games);
 app.use("/masters", master);
 app.use("/api/gamesSetting", gameSetting);
-app.use("/gameList", gameRates);
+app.use("/api/gameList", gameRates);
 app.use("/api/gameResult", gameResult);
 app.use("/winner", winnerList);
 app.use("/starlineProvider", starlineProvider);
@@ -288,7 +288,7 @@ cron.schedule("*/1 * * * *", async (req, res) => {
 	}
 });
 
-const port = process.env.port || 5001;
+const port = process.env.port || 5000;
 
 
 app.listen(port, () => {
