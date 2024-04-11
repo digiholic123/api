@@ -290,7 +290,6 @@ cron.schedule("*/1 * * * *", async (req, res) => {
 
 const port = process.env.port || 5000;
 
-console.log("this is test file");
 app.listen(port, () => {
   new Date().toLocaleDateString();
   console.log(`Running on PORT: ${port} Date: ${new Date().toLocaleString()}`);
