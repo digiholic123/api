@@ -6,6 +6,7 @@ const gameResult = require("../../model/games/GameResult");
 const starProvider = require("../../model/starline/Starline_Provider");
 const starSettings = require("../../model/starline/AddSetting");
 const gameList = require("../../model/games/GameList");
+const mongoose = require("mongoose");
 router.get("/web/walletContact", async (req, res) => {
   try {
     const response = await WalletContact.aggregate([
@@ -32,7 +33,8 @@ router.get("/web/games", async (req, res) => {
     const userInfo = req.session.details;
     const permissionArray = req.view;
     let finalArr = {};
-    const provider = await gamesProvider.find().sort({ _id: 1 });
+    const provider = await gamesProvider.find({}).sort({ _id: 1 });
+    console.log("provider" ,provider)
     let finalNew = [];
     for (index in provider) {
       let id = mongoose.Types.ObjectId(provider[index]._id);
