@@ -108,7 +108,7 @@ router.get("/web/startline", async (req, res) => {
     let finalArr = {};
     const provider1 = await starProvider.find().sort({ _id: 1 });
     let finalNew = [];
-    console.log("provider", provider1);
+    console.log("providereeeeeeeeeee", provider1);
     for (index in provider1) {
       let id = provider1[index]._id;
       // let id = mongoose.Types.ObjectId(provider1[index]._id);
