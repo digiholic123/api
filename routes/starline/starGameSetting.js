@@ -8,19 +8,11 @@ const permission = require("../helpersModule/permission");
 router.get("/web/startline", async (req, res) => {
   try {
     const id = "61fbd0cd41b0d43022cabf27";
-    // const id = req.query.userId;
-
     let finalArr = {};
     const provider1 = await starProvider.find().sort({ _id: 1 });
-    let finalNew = [];
-
-    console.log("provider" ,provider1);
-    
+    let finalNew = [];  
     for (index in provider1) {
       let id = provider1[index]._id;
-      // let id = mongoose.Types.ObjectId(provider1[index]._id);
-
-
       const settings = await starSettings
         .find({ providerId: id })
         .sort({ _id: 1 });
@@ -38,7 +30,6 @@ router.get("/web/startline", async (req, res) => {
       let data = finalArr[index2];
       finalNew.push(data);
     }
- console.log("finalNew" ,finalNew)
     res.send({ data: finalNew, status: true });
   } catch (e) {
     res.json({ message: e });
