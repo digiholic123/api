@@ -20,53 +20,53 @@ const sender = new gcm.Sender(process.env.FIREBASE_SENDER_KEY);
 
 
 
-router.get("/web/gameresult", async (req, res) => {
-  try {
-    const name = "TIME BAZAR"; // Example name to filter by
-    // const name = req.query.name; // Uncomment this line if you want to filter by query parameter
+// router.get("/web/gameresult", async (req, res) => {
+//   try {
+//     const name = "TIME BAZAR"; // Example name to filter by
+//     // const name = req.query.name; // Uncomment this line if you want to filter by query parameter
 
-    const provider = await gamesProvider.find().sort({ _id: 1 });
-    const result = await gameResult.find().sort({ _id: -1 });
+//     const provider = await gamesProvider.find().sort({ _id: 1 });
+//     const result = await gameResult.find().sort({ _id: -1 });
 
-    const groupedData = await result.reduce((acc, item) => {
-      const key = item.providerName.toUpperCase();
-      acc[key] = [...(acc[key] || []), item];
-      return acc;
-    }, {});
+//     const groupedData = await result.reduce((acc, item) => {
+//       const key = item.providerName.toUpperCase();
+//       acc[key] = [...(acc[key] || []), item];
+//       return acc;
+//     }, {});
 
-    const filteredData = await Object.fromEntries(
-      Object.entries(groupedData).filter(([key]) =>
-        key
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .includes(name.toLowerCase().replace(/\s+/g, ""))
-      )
-    );
+//     const filteredData = await Object.fromEntries(
+//       Object.entries(groupedData).filter(([key]) =>
+//         key
+//           .toLowerCase()
+//           .replace(/\s+/g, "")
+//           .includes(name.toLowerCase().replace(/\s+/g, ""))
+//       )
+//     );
 
-    const flattenedData = Object.values(filteredData).flat(); 
-    const groupedByDate = {};
-    flattenedData.forEach((item) => {
-      const resultDate = item.resultDate;
-      if (!groupedByDate[resultDate]) {
-        groupedByDate[resultDate] = [];
-      }
-      groupedByDate[resultDate].push(item);
-    });
+//     const flattenedData = Object.values(filteredData).flat(); 
+//     const groupedByDate = {};
+//     flattenedData.forEach((item) => {
+//       const resultDate = item.resultDate;
+//       if (!groupedByDate[resultDate]) {
+//         groupedByDate[resultDate] = [];
+//       }
+//       groupedByDate[resultDate].push(item);
+//     });
 
-    const groupedData1 = Object.entries(groupedByDate).map( ([resultDate, items]) => ({
-        resultDate,
-        data: items,
-      })
-    );
+//     const groupedData1 = Object.entries(groupedByDate).map( ([resultDate, items]) => ({
+//         resultDate,
+//         data: items,
+//       })
+//     );
 
-    res.send({ data: groupedData1, status: true });
-  } catch (e) {
-    res.json({
-      status: 0,
-      message: e.message, // Use e.message to get the error message
-    });
-  }
-});
+//     res.send({ data: groupedData1, status: true });
+//   } catch (e) {
+//     res.json({
+//       status: 0,
+//       message: e.message, // Use e.message to get the error message
+//     });
+//   }
+// });
 
 router.get("/", session, permission, async (req, res) => {
   try {

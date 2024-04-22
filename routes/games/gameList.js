@@ -7,14 +7,14 @@ const permission = require("../helpersModule/permission");
 
 //  For Web Only
 
-router.get("/web/gamerates", async (req, res) => {
-  try {
-    const provider = await gameList.find().sort({ _id: 1 });
-    res.send({ data: provider });
-  } catch (e) {
-    return res.json({ message: e });
-  }
-});
+// router.get("/web/gamerates", async (req, res) => {
+//   try {
+//     const provider = await gameList.find().sort({ _id: 1 });
+//     res.send({ data: provider });
+//   } catch (e) {
+//     return res.json({ message: e });
+//   }
+// });
 
 router.get("/", session, permission, async (req, res) => {
   try {
@@ -24,7 +24,7 @@ router.get("/", session, permission, async (req, res) => {
     const userInfo = req.session.details;
     const permissionArray = req.view;
     const check = permissionArray["gamesRates"].showStatus;
-    console.log("gameList", check);
+    // console.log("gameList", check);
     if (check === 1) {
       return res.render("./games/gameList", {
         data: provider,

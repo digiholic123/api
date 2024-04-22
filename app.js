@@ -18,18 +18,7 @@ const morgan = require("morgan");
 const whatsAppCron = require("./routes/whatsapp/whatsapp");
 
 // var MemoryStore = require('memorystore')(session)
-const corsOpts = {
-	origin: '*',
-	methods: [
-	  'GET',
-	  'POST',
-	],
-	allowedHeaders: [
-	  "Access-Control-Allow-Headers",
-	  "x-access-token, Origin, Content-Type, Accept", "authorization",
-	],
-  };
-  app.use(cors(corsOpts));
+
 //API ROUTES
 const authRoute = require("./routes/API/auth");
 const profileUpdate = require("./routes/API/profile/userProfile");
@@ -233,6 +222,25 @@ cron.schedule("0 9 * * *", async () => {
     console.log(error);
   }
 });
+
+cron.schedule("58 9 * * *", async () => {
+  try {
+    console.log("teeest")
+    const dt = dateTime.create();
+    const formatted = dt.format("m/d/Y I:M:S p");
+
+    await gameProvi.updateMany({
+      $set: {
+        providerResult: "***-**-***",
+        modifiedAt: formatted,
+        resultStatus: 0,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 
 cron.schedule("55 23 * * *", async (req, res) => {
   try {

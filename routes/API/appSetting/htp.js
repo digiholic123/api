@@ -21,7 +21,6 @@ router.get("/api/walletContact", async (req, res) => {
 
 router.get("/", verify, async (req, res) => {
   try {
-    console.log("---------------------------------------------");
     const data = await Rules.find({});
 
     let finalData = data.length > 0 ? data[0]?.howtoplay : [];
